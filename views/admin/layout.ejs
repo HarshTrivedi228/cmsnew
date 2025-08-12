@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ADMIN Panel</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="/css/font-awesome.css" />
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="/css/style.css" />
+      <style>
+    /* Logo Image Style */
+    #footer {
+  background-color: #007BFF; /* Bootstrap Blue */
+  color: white;
+}
+
+#footer a {
+  color: #FFD700; /* Golden link color */
+  text-decoration: underline;
+}
+
+#footer a:hover {
+  color: white;
+}
+
+    #logo img {
+      max-height: 130px;
+      width: 200px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto;
+      margin-top: -40px;
+      margin-bottom: -22px;
+    }
+  
+.menu li a:hover {
+  background-color: rgb(8, 7, 7);
+}
+
+  </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div id="header-admin">
+      <div class="container">
+        <div class="row">
+          <!-- LOGO -->
+          <div class="col-md-2 me-auto">
+            <a href="/admin/dashboard"
+              <% if (settings.website_logo && settings.website_logo.trim() !== '') { %>
+          <a href="/" id="logo">
+            <img src="/uploads/<%= settings.website_logo %>" alt="Logo" />
+          </a>
+        <% } else { %>
+          <a href="/" id="logo">
+            <img src="/images/news.jpg" alt="Logo" />
+          </a>
+        <% } %>
+          </div>
+          <!-- /LOGO -->
+          <!-- LOG-Out -->
+          <div class="col-md-2">
+            <a href="/admin/logout" class="admin-logout">
+              <i class="fa fa-sign-out"></i> logout
+            </a>
+          </div>
+          <!-- /LOG-Out -->
+        </div>
+      </div>
+    </div>
+    <!-- /HEADER -->
+
+    <!-- Menu Bar -->
+    <div id="admin-menubar">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <ul class="admin-menu">
+              <li>
+                <a href="/"  class=" me-6 mt-20 mb-3"><svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" fill="white" viewBox="0 0 24 24">
+  <rect width="24" height="24" rx="4" fill="#4a90e2"/>
+  <rect x="3" y="4" width="18" height="4" rx="1" fill="white"/>
+  <rect x="3" y="10" width="8" height="4" rx="1" fill="white"/>
+  <rect x="13" y="10" width="8" height="4" rx="1" fill="white"/>
+  <rect x="3" y="16" width="18" height="4" rx="1" fill="white"/>
+</svg>
+</a>
+              </li>
+
+              <li>
+                <a href="/admin/dashboard">Home</a>
+              </li>
+              <li>
+                <a href="/admin/article">Article</a>
+              </li>
+
+              <% if (role === "admin") { %>
+                <li>
+                  <a href="/admin/categories">Category</a>
+                </li>
+                <li>
+                  <a href="/admin/users">Users</a>
+                </li>
+                <li> 
+                  <a href="/admin/settings">Settings</a>
+                </li>
+                <li>
+                <a href="/admin/requests">Show Request</a>
+                </li>
+              <% } %>
+              <li>
+                <a href="/admin/comments">Comments</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Menu Bar -->
+
+    <%- body %>
+
+    <!-- Footer -->
+<!-- ===================== Footer ===================== -->
+<footer class="site-footer bg-secondary text-white">
+  <div class="container text-center">
+    <p>
+      <% if (settings.footer_description && settings.footer_description.trim() !== '') { %>
+        <%= settings.footer_description %>
+      <% } else { %>
+        © Copyright 2025 News | Powered by 
+        <a href="http://www.yahubaba.com/" class="text-info text-decoration-none">Yahu Baba</a>
+      <% } %>
+    </p>
+  </div>
+</footer>
+
+   
+    <!-- /Footer -->
+  </body>
+</html>

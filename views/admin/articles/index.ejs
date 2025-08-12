@@ -1,0 +1,84 @@
+<div id="admin-content">
+  <div class="container">
+    <div class="row align-items-center mb-3">
+      <div class="col-md-10 col-8">
+        <h1 class="admin-heading">
+          <i class="fa fa-file-text"></i> All Articles
+        </h1>
+      </div>
+      <div class="col-md-2 col-4 text-end">
+        <a class="add-new btn btn-sm btn-primary" href="/admin/add-article">Add New Article</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="content-table table table-bordered table-striped bg-white">
+            <thead class="table-dark">
+              <tr>
+                <th>S.No.</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Author</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% articles.forEach(function(article, index) { %>
+                <tr>
+                  <td class="id"><%= index + 1 %></td>
+                  <td><%= article.title %></td>
+                  <td><%= article.category.name %></td>
+                  <td><%= article.createdAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) %></td>
+                  <td><%= article.author.fullname %></td>
+                  <td class="edit">
+                    <a href="/admin/update-article/<%= article._id %>"><i class="fa fa-edit"></i></a>
+                  </td>
+                  <td class="delete">
+                    <a href="/admin/delete-article/<%= article._id %>" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .admin-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .add-new {
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .content-table {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  @media (max-width: 768px) {
+    .admin-heading {
+      font-size: 18px;
+    }
+
+    .add-new {
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+  }
+</style>

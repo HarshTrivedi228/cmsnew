@@ -1,0 +1,40 @@
+<div id="admin-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="admin-heading">Update Category</h1>
+      </div>
+      <div class="col-md-6 mx-auto">
+        <div class="card">
+          <h5 class="card-header">Edit Category</h5>
+          <div class="card-body">
+            <form action="/admin/update-category/<%= category._id %>" method="POST" autocomplete="off">
+              <div class="mb-3">
+                <label class="form-label">Category Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  placeholder="Category Name"
+                  value="<%= category.name %>"
+                  required
+                />
+              </div>
+   <%console.log( category)%>
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea
+                  name="description"
+                  class="form-control"
+                  style="height: 150px;"
+                ><%= category.description || '' %></textarea>
+              </div>
+
+              <input type="submit" class="btn btn-primary" value="Save" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

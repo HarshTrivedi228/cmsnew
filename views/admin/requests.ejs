@@ -1,0 +1,84 @@
+<div style="margin-bottom: 20px;" class="container mt-5 mb-4">
+  <div class="row align-items-center mb-3">
+    <div class="col-md-12">
+      <h1 class="admin-heading"><i class="fa fa-file"></i> All Requests</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped bg-white">
+          <thead class="table-dark">
+            <tr>
+              <th>S.No.</th>
+              <th>Requester Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Request Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% requests.forEach((request, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= request.fullname %></td>
+                <td><%= request.email %></td>
+                <td><%= request.password %></td>
+                <td>
+                  <%= request.createdAt ? request.createdAt.toLocaleDateString('en-GB', {
+                    day: '2-digit', month: 'short', year: 'numeric'
+                  }) : 'N/A' %>
+                </td>
+                <td>Pending</td>
+                <td class="d-flex flex-wrap gap-2">
+                  <!-- Add User Button -->
+                  <a class="btn btn-sm btn-primary" href="/admin/add-request/<%= request._id %>">Add User</a>
+
+                  <!-- Delete Form -->
+                  <form action="/admin/delete-request/<%= request._id %>" method="GET" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .admin-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .table td,
+  .table th {
+    vertical-align: middle !important;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .admin-heading {
+      font-size: 18px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .btn-sm {
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+
+    .d-flex.flex-wrap.gap-2 {
+      flex-direction: column;
+    }
+  }
+</style>

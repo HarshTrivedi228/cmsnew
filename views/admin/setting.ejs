@@ -1,0 +1,45 @@
+<div id="admin-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="admin-heading"><i class="fa fa-cog"></i> Settings</h1>
+      </div>
+      <div class="col-md-6 mx-auto">
+        <div class="card">
+          <h5 class="card-header">Settings</h5>
+          <div class="card-body">
+            <form action="/admin/save-settings" method="POST" enctype="multipart/form-data">
+              
+              <!-- Website Title -->
+              <div class="mb-3">
+                <label for="website_title" class="form-label">Website Title</label>
+                <input type="text" name="website_title" class="form-control" autocomplete="off" required 
+                  value="<%= settings && settings.website_title ? settings.website_title : '' %>">
+              </div>
+
+              <!-- Website Logo -->
+              <div class="mb-3">
+                <label for="website_logo" class="form-label">Upload Logo</label>
+                <input type="file" name="website_logo" class="form-control" <%= settings && settings.logo ? '' : 'required' %>>
+                <% if (settings && settings.logo) { %>
+                  <div class="mt-2">
+                    <img src="/uploads/<%= settings.logo %>" alt="Current Logo" width="100" />
+                  </div>
+                <% } %>
+              </div>
+
+              <!-- Footer Description -->
+              <div class="mb-3">
+                <label for="footer_description" class="form-label">Footer Description</label>
+                <input type="text" name="footer_description" class="form-control" autocomplete="off" required 
+                  value="<%= settings && settings.footer_description ? settings.footer_description : '' %>">
+              </div>
+
+              <input type="submit" name="submit" class="btn btn-primary" value="Save">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

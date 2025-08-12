@@ -1,0 +1,85 @@
+<div id="admin-content">
+  <div class="container">
+    <div class="row align-items-center mb-3">
+      <div class="col-md-10 col-8">
+        <h1 class="admin-heading">
+          <i class="fa fa-gears"></i> All Categories
+        </h1>
+      </div>
+      <div class="col-md-2 col-4 text-end">
+        <a class="add-new btn btn-sm btn-primary" href="/admin/add-category">Add Category</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="content-table table table-bordered table-striped">
+            <thead class="table-dark">
+              <tr>
+                <th>S.No.</th>
+                <th>Category Name</th>
+                <th>Slug</th>
+                <th>No. of Articles</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (categories.length > 0) { %>
+                <% categories.forEach((category, index) => { %>
+                  <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= category.name %></td>
+                    <td><%= category.slug %></td>
+                    <td><%= category.articleCount || 0 %></td>
+                    <td class="edit">
+                      <a href="/admin/update-category/<%= category._id %>">
+                        <i class="fa fa-edit"></i>
+                      </a>
+                    </td>
+                    <td class="delete">
+                      <a href="/admin/delete-category/<%= category._id %>" onclick="return confirm('Are you sure to delete this category?')">
+                        <i class="fa fa-trash-o"></i>
+                      </a>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="6" style="text-align: center;">No categories found</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .admin-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .add-new {
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .admin-heading {
+      font-size: 18px;
+    }
+
+    .add-new {
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+  }
+</style>

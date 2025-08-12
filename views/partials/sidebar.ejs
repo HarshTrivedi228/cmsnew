@@ -1,0 +1,91 @@
+<!-- sidebar -->
+<div class="sidebar" style="position: sticky; top: 20px; height: 200vh; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
+    <style>
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+        .recent-post {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .recent-post:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        @keyframes typing {
+            0% { content: "Find recently news..."; }
+            25% { content: "Find recently"; }
+            50% { content: "Find"; }
+            75% { content: "Find recently news"; }
+            100% { content: "Find recently news..."; }
+        }
+        .search-input::placeholder {
+            animation: typing 4s infinite;
+        }
+    </style>
+    
+    <!-- search box -->
+    <div class="search-box-container" style="margin-bottom: 25px;">
+        <h4>Search</h4>
+        <form class="search-post" action="/search" method="GET">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control search-input" 
+                       placeholder="Find recently news..."
+                       style="border: 1px solid #ddd; padding: 10px;">
+                <span class="input-group-btn">
+                    <button type="submit"  class="btn btn-danger" style="height: 100%;">Search</button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <!-- /search box -->
+    
+    <!-- recent posts box -->
+    <div class="recent-post-container">
+        <h4>Recent Posts</h4>
+        <div class="recent-post-list" style="padding-right: 10px;">
+          
+            <% latestNews.forEach(item => { %>
+            <div class="recent-post">
+                <a class="post-img" href="/single/<%= item._id %>">
+                    <img src="/uploads/<%= item.image || 'default.jpg' %>" alt="" style="width: 100%; height: auto;"/>
+                </a>
+                <div class="post-content">
+                    <h5><a href="/single/<%= item._id %>" style="text-decoration: none; color: #333;"><%= item.title %></a></h5>
+                    <span style="display: block; margin: 5px 0;">
+                        <i class="fa fa-tags" aria-hidden="true"></i>
+                        <a href="/category/<%= item.category.slug %>" style="text-decoration: none;"><%= item.category.name %></a>
+                    </span>
+                    <span style="display: block; margin: 5px 0;">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <%= new Date(item.createdAt).toDateString() %>
+                    </span>
+                    <a class="read-more" href="/single/<%= item._id %>" style="text-decoration: none; color: #d9534f;">read more</a>
+                </div>
+            </div>
+            <% }) %>
+            
+
+        </div>
+    </div>
+    <!-- /recent posts box -->
+</div>
+<!-- /sidebar -->
+
+<script>
+    // JavaScript fallback for better browser compatibility
+    const phrases = ["Search your favourite fields...", "Search your favourite ", "Search your","Search","Search your","Search your favourite ", "Search your favourite fields..."];
+    let current = 0;
+    const input = document.querySelector('.search-input');
+    
+    function rotatePlaceholder() {
+        input.setAttribute('placeholder', phrases[current]);
+        current = (current + 1) % phrases.length;
+    }
+    
+    // Start the animation after 1 second
+    setTimeout(() => {
+        setInterval(rotatePlaceholder, 700);
+    }, 700);
+</script>
