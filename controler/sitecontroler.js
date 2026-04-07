@@ -48,10 +48,10 @@ const index = async (req, res, next) => {
 
     res.render('index', {
       paginatedNews,
-      categories,
-      latestNews,
-      settings,
-      query:req.query
+      categories: categories || [],
+      latestNews: latestNews || [],
+      settings: settings || {},
+      query: req.query
     });
 
   } catch (error) {
@@ -88,7 +88,12 @@ const articlesByCategory = async (req, res, next) => {
 
     const categories = await getUsedCategories();
 
-    res.render('category', { paginatedNews, categories ,category,query:req.query});
+    res.render('category', {
+      paginatedNews,
+      categories: categories || [],
+      category,
+      query: req.query
+    });
   } catch (error) {
     next(error);
   }
@@ -110,10 +115,14 @@ const singleArticle = async (req, res, next) => {const id = req.params.id;
     }
 
     const categories = await getUsedCategories();
-  //get all comments
-    const comments=await commentmodel.find({article:req.params.id,status:'approved'}).sort({createdAt:-1});
-    
-    res.render('single', { singleNews, categories,comments });
+    // get all comments
+    const comments = await commentmodel.find({ article: req.params.id, status: 'approved' }).sort({ createdAt: -1 });
+
+    res.render('single', {
+      singleNews,
+      categories: categories || [],
+      comments: comments || []
+    });
   } catch (error) {
     next(error);
   }
@@ -121,17 +130,18 @@ const singleArticle = async (req, res, next) => {const id = req.params.id;
 
 const search = async (req, res, next) => {
   try {
-    const query = req.query.search; // ✅ Extract query from URL
-    
+    const query = (req.query.search || '').trim(); // safe default if missing
 
     const paginatedNews = await paginate(
       newsmodel,
-      {
-        $or: [
-          { title: { $regex: query, $options: 'i' } },
-          { content: { $regex: query, $options: 'i' } }
-        ]
-      },
+      query
+        ? {
+            $or: [
+              { title: { $regex: query, $options: 'i' } },
+              { content: { $regex: query, $options: 'i' } }
+            ]
+          }
+        : {},
       req.query,
       {
         sort: '-createdAt',
@@ -150,7 +160,12 @@ const search = async (req, res, next) => {
 
     const categories = await getUsedCategories();
 
-    res.render('search', { paginatedNews, categories, query:req.query,p:query });
+    res.render('search', {
+      paginatedNews,
+      categories: categories || [],
+      query: req.query,
+      p: query
+    });
   } catch (error) {
     next(error);
   }
@@ -158,13 +173,12 @@ const search = async (req, res, next) => {
 
 
 const author = async (req, res, next) => {
-
-  const author = await usermodel.findOne({ _id: req.params.name });
-  
-  if (!author) {
-    return res.status(404).json({ message: 'Author not found' });
-  }
   try {
+    const author = await usermodel.findOne({ _id: req.params.name });
+
+    if (!author) {
+      return res.status(404).json({ message: 'Author not found' });
+    }
     // const news = await newsmodel.find({ author: req.params.name })
     //   .populate('category', { name: 1, slug: 1 })
     //   .populate('author', 'fullname')
@@ -190,7 +204,12 @@ const author = async (req, res, next) => {
 
     const categories = await getUsedCategories();
 
-    res.render('author', { paginatedNews, categories,author,query:req.query });
+    res.render('author', {
+      paginatedNews,
+      categories: categories || [],
+      author,
+      query: req.query
+    });
   } catch (error) {
     next(error);
   }

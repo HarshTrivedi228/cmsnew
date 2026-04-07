@@ -70,15 +70,23 @@
               <p class="card-text">
                 <small class="text-muted me-3">
                   <i class="fa fa-tags"></i>
-                  <a href="/category/<%= item.category.slug %>" class="text-muted text-decoration-none">
-                    <%= item.category.name %>
-                  </a>
+                  <% if (item.category) { %>
+                    <a href="/category/<%= item.category.slug %>" class="text-muted text-decoration-none">
+                      <%= item.category.name %>
+                    </a>
+                  <% } else { %>
+                    <span class="text-muted">Uncategorized</span>
+                  <% } %>
                 </small>
                 <small class="text-muted me-3">
                   <i class="fa fa-user"></i>
-                  <a href="/author/<%= item.author._id %>" class="text-muted text-decoration-none">
-                    <%= item.author.fullname %>
-                  </a>
+                  <% if (item.author) { %>
+                    <a href="/author/<%= item.author._id %>" class="text-muted text-decoration-none">
+                      <%= item.author.fullname %>
+                    </a>
+                  <% } else { %>
+                    <span class="text-muted">Unknown Author</span>
+                  <% } %>
                 </small>
                 <small class="text-muted">
                   <i class="fa fa-calendar"></i>
@@ -86,7 +94,7 @@
                 </small>
               </p>
 
-              <% const plainText = item.content.replace(/<[^>]*>/g, '') %>
+              <% const plainText = (item.content || '').replace(/<[^>]*>/g, '') %>
               <div class="card-text text-muted fw-bold">
                 <%= plainText.substring(0, 140) %>...
               </div>
