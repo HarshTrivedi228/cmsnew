@@ -46,7 +46,7 @@
         <h4>Recent Posts</h4>
         <div class="recent-post-list" style="padding-right: 10px;">
           
-            <% latestNews.forEach(item => { %>
+            <% (latestNews || []).forEach(item => { %>
             <div class="recent-post">
                 <a class="post-img" href="/single/<%= item._id %>">
                     <img src="/uploads/<%= item.image || 'default.jpg' %>" alt="" style="width: 100%; height: auto;"/>
@@ -55,7 +55,11 @@
                     <h5><a href="/single/<%= item._id %>" style="text-decoration: none; color: #333;"><%= item.title %></a></h5>
                     <span style="display: block; margin: 5px 0;">
                         <i class="fa fa-tags" aria-hidden="true"></i>
-                        <a href="/category/<%= item.category.slug %>" style="text-decoration: none;"><%= item.category.name %></a>
+                        <% if (item.category) { %>
+                          <a href="/category/<%= item.category.slug %>" style="text-decoration: none;"><%= item.category.name %></a>
+                        <% } else { %>
+                          <span>Uncategorized</span>
+                        <% } %>
                     </span>
                     <span style="display: block; margin: 5px 0;">
                         <i class="fa fa-calendar" aria-hidden="true"></i>

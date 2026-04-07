@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>
-    <% if (settings.website_title && settings.website_title.trim() !== '') { %>
+    <% if (settings && settings.website_title && settings.website_title.trim() !== '') { %>
       <%= settings.website_title %>
     <% } else { %>
-      News
+      News Portal
     <% } %>
   </title>
 
@@ -55,7 +55,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-3">
-        <% if (settings.website_logo && settings.website_logo.trim() !== '') { %>
+        <% if (settings && settings.website_logo && settings.website_logo.trim() !== '') { %>
           <a href="/" id="logo">
             <img src="/uploads/<%= settings.website_logo %>" alt="Logo" />
           </a>
@@ -77,7 +77,7 @@
       <div class="col-md-12">
         <ul class='menu'>
           <li><a href='/'>Home</a></li>
-          <% categories.forEach(function(category) { %>
+          <% (categories || []).forEach(function(category) { %>
             <li><a href="/category/<%= category.slug %>"><%= category.name %></a></li>
           <% }) %>
            <li class="float-end"><a href='/admin'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#555" viewBox="0 0 24 24">
@@ -126,7 +126,7 @@
     <div class="row">
       <div class="col-md-12 text-center">
         <p>
-          <% if (settings.footer_description && settings.footer_description.trim() !== '') { %>
+          <% if (settings && settings.footer_description && settings.footer_description.trim() !== '') { %>
             <%= settings.footer_description %>
           <% } else { %>
             © Copyright 2025 News | Powered by 

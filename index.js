@@ -12,17 +12,14 @@ const startServer = async () => {
   try {
     // Connect to MongoDB
    mongoose.connect(
-  'mongodb+srv://HarshTrivedi:harsh@cluster0.o8dwibi.mongodb.net/news-blog?retryWrites=true&w=majority',
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }
-).then(() => {
+  'mongodb+srv://HarshTrivedi:harsh@cluster0.iufeket.mongodb.net/new-news-blog?retryWrites=true&w=majority'
+)
+.then(() => {
   console.log('✅ MongoDB connected');
-}).catch(err => {
+})
+.catch(err => {
   console.error('❌ Connection error:', err);
 });
-
 
 
     // View Engine Setup
