@@ -31,9 +31,9 @@
                 <tr>
                   <td class="id"><%= index + 1 %></td>
                   <td><%= article.title %></td>
-                  <td><%= article.category.name %></td>
-                  <td><%= article.createdAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) %></td>
-                  <td><%= article.author.fullname %></td>
+                  <td><%= (article.category && article.category.name) ? article.category.name : 'Uncategorized' %></td>
+                  <td><%= article.createdAt ? (new Date(article.createdAt)).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '' %></td>
+                  <td><%= (article.author && article.author.fullname) ? article.author.fullname : 'Unknown Author' %></td>
                   <td class="edit">
                     <a href="/admin/update-article/<%= article._id %>"><i class="fa fa-edit"></i></a>
                   </td>
