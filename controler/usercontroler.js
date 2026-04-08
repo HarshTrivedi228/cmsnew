@@ -32,7 +32,27 @@ const adminLogin = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    // Migration-safe password check:
+    // - If the stored password looks like a bcrypt hash, use bcrypt.compare
+    // - Otherwise assume legacy plaintext, compare directly and re-hash on success
+    let isPasswordValid = false;
+    const stored = user.password || '';
+    const isHashed = typeof stored === 'string' && /^\$2[aby]\$/.test(stored);
+    if (isHashed) {
+      isPasswordValid = await bcrypt.compare(password, stored);
+    } else {
+      if (password === stored) {
+        isPasswordValid = true;
+        // Attempt to migrate plaintext password to a hash
+        try {
+          user.password = await bcrypt.hash(password, 10);
+          await user.save();
+        } catch (e) {
+          console.error('Failed to migrate plaintext password to hash', e);
+        }
+      }
+    }
+
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid password' });
     }
@@ -175,7 +195,7 @@ const addrequestpage = async (req, res, next) => {
           <h2 style="color: #4CAF50;">Welcome, ${user.fullname}!</h2>
           <p>Your request has been <strong style="color: green;">approved</strong> successfully.</p>
           <p><strong>Email:</strong> ${user.email}</p>
-          <p><strong>Password:</strong> ${user.password}</p>
+          <p><em>For security reasons your password is not included in this email.</em></p>
           <p>You can now login and start posting as an author!</p>
           <br>
           <p style="color: #888;">Regards,<br><strong>Admin Team</strong></p>
@@ -215,6 +235,10 @@ const addUserPage = async (req, res, next) => {
 
 const addUser = async (req, res, next) => {
   try {
+    // Hash password before creating user to ensure it's never stored in plaintext
+    if (req.body.password) {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    }
     await usermodel.create(req.body);
     res.redirect('/admin/users');
   } catch (error) {
@@ -246,9 +270,10 @@ const updateUser = async (req, res, next) => {
 
     user.fullname = fullname || user.fullname;
     user.username = username;
-    if (password) {
-      user.password = password;
-    }
+      if (password) {
+        // Hash updated password before saving
+        user.password = await bcrypt.hash(password, 10);
+      }
     user.role = role || user.role;
 
     await user.save();
